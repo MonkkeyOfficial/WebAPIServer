@@ -24157,25 +24157,28 @@ var TabControl = (function (_super) {
     function TabControl(a1, a2) {
         var _this = _super.call(this, a1, a2) || this;
         _this.state = {
-            activated: _this.props.children.length > 0 ? _this.props.children[0] : null
+            activated: _this.props.children.length > 0 ? _this.props.children[0].key : null
         };
         return _this;
     }
     TabControl.prototype.activate = function (child) {
         this.setState({
-            activated: child
+            activated: child.key
         });
     };
     TabControl.prototype.render = function () {
         var _this = this;
         var tabs = [];
+        var activated = React.createElement("span", null);
         var _loop_1 = function () {
             var child = this_1.props.children[k];
             if (child.type.constructor !== Function) {
                 console.error('The direct children of a TabControl must be Tab elements.');
                 return "continue";
             }
-            tabs.push(React.createElement("li", { key: k, role: "presentation", onClick: function () { return _this.activate(child); }, className: this_1.state.activated === child ? 'active' : '' },
+            if (this_1.state.activated === child.key)
+                activated = child;
+            tabs.push(React.createElement("li", { key: k, role: "presentation", onClick: function () { return _this.activate(child); }, className: activated === child ? 'active' : '' },
                 React.createElement("a", { role: "tab" }, child.props.name)));
         };
         var this_1 = this;
@@ -24184,7 +24187,7 @@ var TabControl = (function (_super) {
         }
         return React.createElement("div", null,
             React.createElement("ul", { className: "nav nav-tabs", role: "tablist" }, tabs),
-            this.state.activated);
+            activated);
     };
     return TabControl;
 }(React.Component));

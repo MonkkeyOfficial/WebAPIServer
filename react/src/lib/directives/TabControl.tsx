@@ -34,20 +34,21 @@ export class TabControl extends React.Component<any, any>
   {
     super(a1, a2);
     this.state = {
-      activated: this.props.children.length > 0 ? this.props.children[0] : null
+      activated: this.props.children.length > 0 ? this.props.children[0].key : null
     }
   }
 
   activate(child)
   {
     this.setState({
-      activated: child
+      activated: child.key
     })
   }
 
   render()
   {
     var tabs = [];
+    var activated = <span />;
 
     for(var k in this.props.children)
     {
@@ -58,14 +59,17 @@ export class TabControl extends React.Component<any, any>
         continue;
       }
       
-      tabs.push(<li key={k} role="presentation" onClick={() => this.activate(child)} className={this.state.activated === child ? 'active' : ''}><a role="tab">{child.props.name}</a></li>);
+      if(this.state.activated === child.key)
+        activated = child;
+      
+      tabs.push(<li key={k} role="presentation" onClick={() => this.activate(child)} className={activated === child ? 'active' : ''}><a role="tab">{child.props.name}</a></li>);
     }
 
     return <div>
       <ul className="nav nav-tabs" role="tablist">
         {tabs}
       </ul>
-      {this.state.activated}
+      {activated}
     </div>;
   }
 }
