@@ -32,8 +32,8 @@
     "react/src/root.tsx"
   ],
   "scripts": {
-    "dev": "node watch.js package.json dev",
-    "build": "node watch.js package.json prod",
+    "dev": "dev-watch package.json dev",
+    "build": "dev-watch package.json prod",
     "serve": "node process/index.js"
   },
   "name": "framework",
