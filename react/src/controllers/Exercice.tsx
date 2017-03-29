@@ -1,8 +1,11 @@
 import React = require('react')
 import { Api } from '../lib/services/Api'
 
+import { TabControl, Tab } from '../lib/directives/TabControl'
 import { Icon } from '../lib/directives/Icon'
 import { Config } from '../config'
+
+import { ExerciceExecution } from './ExerciceExecution'
 
 declare var $ : any;
 
@@ -54,75 +57,6 @@ export class UserScript extends React.Component<UserScriptProps, any>
         <div className="filters collapse" id={'filters_' + this.props.name}>{filters}</div>
       </div>
     </div>
-  }
-}
-
-interface TabProps
-{
-  name: String;
-}
-class Tab extends React.Component<TabProps, any>
-{
-  active()
-  {
-    this.setState({
-      active: true
-    })
-  }
-
-  constructor(a1, a2)
-  {
-    super(a1, a2);
-
-    this.state = {
-      active: false
-    }
-  }
-
-  render()
-  {
-    return <div className="tab-content active">{this.props.children}</div>;
-  }
-}
-class TabControl extends React.Component<any, any>
-{
-  constructor(a1, a2)
-  {
-    super(a1, a2);
-    this.state = {
-      activated: this.props.children.length > 0 ? this.props.children[0] : null
-    }
-  }
-
-  activate(child)
-  {
-    this.setState({
-      activated: child
-    })
-  }
-
-  render()
-  {
-    var tabs = [];
-
-    for(var k in this.props.children)
-    {
-      let child = this.props.children[k];
-      if(child.type.constructor !== Function)
-      {
-        console.error('The direct children of a TabControl must be Tab elements.');
-        continue;
-      }
-      
-      tabs.push(<li key={k} role="presentation" onClick={() => this.activate(child)} className={this.state.activated === child ? 'active' : ''}><a role="tab">{child.props.name}</a></li>);
-    }
-
-    return <div>
-      <ul className="nav nav-tabs" role="tablist">
-        {tabs}
-      </ul>
-      {this.state.activated}
-    </div>;
   }
 }
 
@@ -214,17 +148,6 @@ export class Exercice extends React.Component<ExerciceProps, any>
     var json = { codes: {}, stdin: '... [optional]', args: 'arg1 arg2 arg3 ... [optional]' };
     for(var name in this.state.image.config.userFiles)
       json.codes[name] = '...';
-    
-    var testFields = [];
-    for(var name in this.state.image.config.userFiles)
-    {
-      var info = this.state.image.config.userFiles[name];
-      testFields.push(<Tab key={name} name={name}>
-        <div className="col-xs-12">
-          <textarea className="form-control" defaultValue={info.default ? info.default : ''} id={'_test_' + name} key={name} />
-        </div>
-      </Tab>);
-    }
 
     return <div className="exercice">
       <div className="header">
@@ -287,36 +210,11 @@ export class Exercice extends React.Component<ExerciceProps, any>
             <label>API - JSON</label>
             <pre>{JSON.stringify(json, null, 2)}</pre>
           </div>
-          <div className="test-wrapper">
-            <label>Online test</label>
-            <button className="btn btn-success btn-xs run-btn" onClick={() => this.runTest()}>Run</button>
-            <div className="test row">
-              <div className="col-xs-12">
-                <TabControl>
-                  {testFields}
-                </TabControl>
-              </div>
-            </div>
-            { !this.state.test ? <span /> :
-              <div>
-                <Icon name={this.state.test.success && !this.state.test.error ? 'icon-check' : 'icon-remove'} />
-                <TabControl>
-                  <Tab name="Std::out">
-                    <pre>{this.state.test.stdout}</pre>
-                  </Tab>
-                  <Tab name="Error (JSON)">
-                    <pre>{JSON.stringify(this.state.test.error, null, 2)}</pre>
-                  </Tab>
-                  <Tab name="Std::err">
-                    <pre>{this.state.test.stderr}</pre>
-                  </Tab>
-                  <Tab name="Full JSON">
-                    <pre>{JSON.stringify(this.state.test, null, 2)}</pre>
-                  </Tab>
-                </TabControl>
-              </div>
-            }
-          </div>
+          {
+            this.state.found ?
+              <ExerciceExecution className="test-wrapper" image={this.state.image} url={this.getUrl()} />
+            : <span />
+          }
         </div>
       </div>
     </div>

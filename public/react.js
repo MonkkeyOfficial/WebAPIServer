@@ -23651,7 +23651,7 @@ var Config = (function () {
 }());
 exports.Config = Config;
 
-},{"./lib/directives/Icon":220,"./lib/directives/Popover":221,"./lib/services/Api":222,"./lib/services/Html":223}],217:[function(require,module,exports){
+},{"./lib/directives/Icon":221,"./lib/directives/Popover":222,"./lib/services/Api":224,"./lib/services/Html":225}],217:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -23667,6 +23667,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var Api_1 = require("../lib/services/Api");
 var Icon_1 = require("../lib/directives/Icon");
+var ExerciceExecution_1 = require("./ExerciceExecution");
 function def(root, name, defaultValue) {
     if (root[name] === undefined || root[name] === null)
         root[name] = defaultValue;
@@ -23706,61 +23707,6 @@ var UserScript = (function (_super) {
     return UserScript;
 }(React.Component));
 exports.UserScript = UserScript;
-var Tab = (function (_super) {
-    __extends(Tab, _super);
-    function Tab(a1, a2) {
-        var _this = _super.call(this, a1, a2) || this;
-        _this.state = {
-            active: false
-        };
-        return _this;
-    }
-    Tab.prototype.active = function () {
-        this.setState({
-            active: true
-        });
-    };
-    Tab.prototype.render = function () {
-        return React.createElement("div", { className: "tab-content active" }, this.props.children);
-    };
-    return Tab;
-}(React.Component));
-var TabControl = (function (_super) {
-    __extends(TabControl, _super);
-    function TabControl(a1, a2) {
-        var _this = _super.call(this, a1, a2) || this;
-        _this.state = {
-            activated: _this.props.children.length > 0 ? _this.props.children[0] : null
-        };
-        return _this;
-    }
-    TabControl.prototype.activate = function (child) {
-        this.setState({
-            activated: child
-        });
-    };
-    TabControl.prototype.render = function () {
-        var _this = this;
-        var tabs = [];
-        var _loop_1 = function () {
-            var child = this_1.props.children[k];
-            if (child.type.constructor !== Function) {
-                console.error('The direct children of a TabControl must be Tab elements.');
-                return "continue";
-            }
-            tabs.push(React.createElement("li", { key: k, role: "presentation", onClick: function () { return _this.activate(child); }, className: this_1.state.activated === child ? 'active' : '' },
-                React.createElement("a", { role: "tab" }, child.props.name)));
-        };
-        var this_1 = this;
-        for (var k in this.props.children) {
-            _loop_1();
-        }
-        return React.createElement("div", null,
-            React.createElement("ul", { className: "nav nav-tabs", role: "tablist" }, tabs),
-            this.state.activated);
-    };
-    return TabControl;
-}(React.Component));
 var Exercice = (function (_super) {
     __extends(Exercice, _super);
     function Exercice() {
@@ -23835,13 +23781,6 @@ var Exercice = (function (_super) {
         var json = { codes: {}, stdin: '... [optional]', args: 'arg1 arg2 arg3 ... [optional]' };
         for (var name in this.state.image.config.userFiles)
             json.codes[name] = '...';
-        var testFields = [];
-        for (var name in this.state.image.config.userFiles) {
-            var info = this.state.image.config.userFiles[name];
-            testFields.push(React.createElement(Tab, { key: name, name: name },
-                React.createElement("div", { className: "col-xs-12" },
-                    React.createElement("textarea", { className: "form-control", defaultValue: info.default ? info.default : '', id: '_test_' + name, key: name }))));
-        }
         return React.createElement("div", { className: "exercice" },
             React.createElement("div", { className: "header" },
                 React.createElement("div", { className: "dates" },
@@ -23898,24 +23837,9 @@ var Exercice = (function (_super) {
                     React.createElement("div", { className: "api-wrapper" },
                         React.createElement("label", null, "API - JSON"),
                         React.createElement("pre", null, JSON.stringify(json, null, 2))),
-                    React.createElement("div", { className: "test-wrapper" },
-                        React.createElement("label", null, "Online test"),
-                        React.createElement("button", { className: "btn btn-success btn-xs run-btn", onClick: function () { return _this.runTest(); } }, "Run"),
-                        React.createElement("div", { className: "test row" },
-                            React.createElement("div", { className: "col-xs-12" },
-                                React.createElement(TabControl, null, testFields))),
-                        !this.state.test ? React.createElement("span", null) :
-                            React.createElement("div", null,
-                                React.createElement(Icon_1.Icon, { name: this.state.test.success && !this.state.test.error ? 'icon-check' : 'icon-remove' }),
-                                React.createElement(TabControl, null,
-                                    React.createElement(Tab, { name: "Std::out" },
-                                        React.createElement("pre", null, this.state.test.stdout)),
-                                    React.createElement(Tab, { name: "Error (JSON)" },
-                                        React.createElement("pre", null, JSON.stringify(this.state.test.error, null, 2))),
-                                    React.createElement(Tab, { name: "Std::err" },
-                                        React.createElement("pre", null, this.state.test.stderr)),
-                                    React.createElement(Tab, { name: "Full JSON" },
-                                        React.createElement("pre", null, JSON.stringify(this.state.test, null, 2)))))))));
+                    this.state.found ?
+                        React.createElement(ExerciceExecution_1.ExerciceExecution, { className: "test-wrapper", image: this.state.image, url: this.getUrl() })
+                        : React.createElement("span", null))));
     };
     return Exercice;
 }(React.Component));
@@ -23925,7 +23849,83 @@ exports.ExerciceRoute = function (_a) {
     return (React.createElement(Exercice, { id: match.params.id }));
 };
 
-},{"../lib/directives/Icon":220,"../lib/services/Api":222,"react":212}],218:[function(require,module,exports){
+},{"../lib/directives/Icon":221,"../lib/services/Api":224,"./ExerciceExecution":218,"react":212}],218:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
+var TabControl_1 = require("../lib/directives/TabControl");
+var ExerciceExecution = (function (_super) {
+    __extends(ExerciceExecution, _super);
+    function ExerciceExecution(a1, a2) {
+        var _this = _super.call(this, a1, a2) || this;
+        _this.state = {
+            text: null
+        };
+        return _this;
+    }
+    ExerciceExecution.prototype.run = function () {
+        var _this = this;
+        var query = {
+            codes: {}
+        };
+        for (var name in this.props.image.config.userFiles) {
+            var info = this.props.image.config.userFiles[name];
+            var value = $('#_test_' + name).val();
+            query.codes[name] = value;
+        }
+        $.ajax({
+            url: this.props.url + '/invoke',
+            method: 'POST',
+            data: query,
+            success: function (result) {
+                _this.setState({
+                    test: result
+                });
+            }
+        });
+    };
+    ExerciceExecution.prototype.render = function () {
+        var _this = this;
+        var testFields = [];
+        for (var name in this.props.image.config.userFiles) {
+            var info = this.props.image.config.userFiles[name];
+            testFields.push(React.createElement(TabControl_1.Tab, { key: name, name: name },
+                React.createElement("div", { className: "col-xs-12" },
+                    React.createElement("textarea", { className: "form-control", defaultValue: info.default ? info.default : '', id: '_test_' + name, key: name }))));
+        }
+        return React.createElement("div", { className: this.props.className },
+            React.createElement("label", null, "Online test"),
+            React.createElement("button", { className: "btn btn-success btn-xs run-btn", onClick: function () { return _this.run(); } }, "Run"),
+            React.createElement("div", { className: "test row" },
+                React.createElement("div", { className: "col-xs-12" },
+                    React.createElement(TabControl_1.TabControl, null, testFields))),
+            !this.state.test ? React.createElement("span", null) :
+                React.createElement("div", null,
+                    React.createElement(TabControl_1.TabControl, null,
+                        React.createElement(TabControl_1.Tab, { name: "Std::out" },
+                            React.createElement("pre", null, this.state.test.stdout)),
+                        React.createElement(TabControl_1.Tab, { name: "Error (JSON)" },
+                            React.createElement("pre", null, JSON.stringify(this.state.test.error, null, 2))),
+                        React.createElement(TabControl_1.Tab, { name: "Std::err" },
+                            React.createElement("pre", null, this.state.test.stderr)),
+                        React.createElement(TabControl_1.Tab, { name: "Full JSON" },
+                            React.createElement("pre", null, JSON.stringify(this.state.test, null, 2))))));
+    };
+    return ExerciceExecution;
+}(React.Component));
+exports.ExerciceExecution = ExerciceExecution;
+
+},{"../lib/directives/TabControl":223,"react":212}],219:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -23955,7 +23955,7 @@ var Footer = (function (_super) {
 }(React.Component));
 exports.Footer = Footer;
 
-},{"../lib/directives/Icon":220,"react":212}],219:[function(require,module,exports){
+},{"../lib/directives/Icon":221,"react":212}],220:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -23989,7 +23989,7 @@ var Navigation = (function (_super) {
 }(React.Component));
 exports.Navigation = Navigation;
 
-},{"../lib/directives/Icon":220,"react":212}],220:[function(require,module,exports){
+},{"../lib/directives/Icon":221,"react":212}],221:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -24045,7 +24045,7 @@ Icon.defaultProps = {
 };
 exports.Icon = Icon;
 
-},{"react":212}],221:[function(require,module,exports){
+},{"react":212}],222:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -24091,7 +24091,79 @@ Popover.defaultProps = {
 };
 exports.Popover = Popover;
 
-},{"react":212,"react-dom":34}],222:[function(require,module,exports){
+},{"react":212,"react-dom":34}],223:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
+var Tab = (function (_super) {
+    __extends(Tab, _super);
+    function Tab(a1, a2) {
+        var _this = _super.call(this, a1, a2) || this;
+        _this.state = {
+            active: false
+        };
+        return _this;
+    }
+    Tab.prototype.active = function () {
+        this.setState({
+            active: true
+        });
+    };
+    Tab.prototype.render = function () {
+        return React.createElement("div", { className: "tab-content active" }, this.props.children);
+    };
+    return Tab;
+}(React.Component));
+exports.Tab = Tab;
+var TabControl = (function (_super) {
+    __extends(TabControl, _super);
+    function TabControl(a1, a2) {
+        var _this = _super.call(this, a1, a2) || this;
+        _this.state = {
+            activated: _this.props.children.length > 0 ? _this.props.children[0] : null
+        };
+        return _this;
+    }
+    TabControl.prototype.activate = function (child) {
+        this.setState({
+            activated: child
+        });
+    };
+    TabControl.prototype.render = function () {
+        var _this = this;
+        var tabs = [];
+        var _loop_1 = function () {
+            var child = this_1.props.children[k];
+            if (child.type.constructor !== Function) {
+                console.error('The direct children of a TabControl must be Tab elements.');
+                return "continue";
+            }
+            tabs.push(React.createElement("li", { key: k, role: "presentation", onClick: function () { return _this.activate(child); }, className: this_1.state.activated === child ? 'active' : '' },
+                React.createElement("a", { role: "tab" }, child.props.name)));
+        };
+        var this_1 = this;
+        for (var k in this.props.children) {
+            _loop_1();
+        }
+        return React.createElement("div", null,
+            React.createElement("ul", { className: "nav nav-tabs", role: "tablist" }, tabs),
+            this.state.activated);
+    };
+    return TabControl;
+}(React.Component));
+exports.TabControl = TabControl;
+
+},{"react":212}],224:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Api = (function () {
@@ -24141,7 +24213,7 @@ var Api = (function () {
 Api.useCache = false;
 exports.Api = Api;
 
-},{}],223:[function(require,module,exports){
+},{}],225:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ReactDOM = require("react-dom");
@@ -24192,7 +24264,7 @@ var Html = (function () {
 }());
 exports.Html = Html;
 
-},{"react-dom":34}],224:[function(require,module,exports){
+},{"react-dom":34}],226:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var config_1 = require("./config");
@@ -24207,5 +24279,5 @@ ReactDOM.render(React.createElement(react_router_dom_1.BrowserRouter, null,
     React.createElement(react_router_dom_1.Route, { path: "/exo/:id", component: Exercice_1.ExerciceRoute })), document.getElementById('content'));
 ReactDOM.render(React.createElement(Footer_1.Footer, null), document.getElementById('footer'));
 
-},{"./config":216,"./controllers/Exercice":217,"./controllers/Footer":218,"./controllers/Navigation":219,"react-dom":34,"react-router-dom":173}]},{},[224])(224)
+},{"./config":216,"./controllers/Exercice":217,"./controllers/Footer":219,"./controllers/Navigation":220,"react-dom":34,"react-router-dom":173}]},{},[226])(226)
 });
