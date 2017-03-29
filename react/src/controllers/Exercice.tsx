@@ -241,7 +241,7 @@ export class Exercice extends React.Component<ExerciceProps, any>
             : <span />
           }
           </button>
-          <textarea rows={1} className="value" readOnly value={this.getUrl()}></textarea>
+          <textarea rows={1} cols={30} className="value" readOnly value={this.getUrl()}></textarea>
         </div>
       </div>
       <div className="body">

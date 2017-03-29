@@ -23855,7 +23855,7 @@ var Exercice = (function (_super) {
                         this.state.copied !== undefined ?
                             React.createElement(Icon_1.Icon, { name: this.state.copied ? 'icon-check' : 'icon-remove' })
                             : React.createElement("span", null)),
-                    React.createElement("textarea", { rows: 1, className: "value", readOnly: true, value: this.getUrl() }))),
+                    React.createElement("textarea", { rows: 1, cols: 30, className: "value", readOnly: true, value: this.getUrl() }))),
             React.createElement("div", { className: "body" },
                 React.createElement("div", { className: "repositories-wrapper" },
                     React.createElement("label", null, "Repositories"),
