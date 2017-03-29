@@ -6,9 +6,9 @@ process.on('uncaughtException', function (err) {
     console.error(err.stack);
 });
 
-var compile = require('./process/web/web.compile.js');
-var execute = require('./process/web/web.execute.js');
-var manage = require('./process/web/web.manage.js');
+var compile = require('./web/web.compile.js');
+var execute = require('./web/web.execute.js');
+var manage = require('./web/web.manage.js');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

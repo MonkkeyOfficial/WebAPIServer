@@ -33,7 +33,8 @@
   ],
   "scripts": {
     "dev": "node watch.js package.json dev",
-    "build": "node watch.js package.json prod"
+    "build": "node watch.js package.json prod",
+    "serve": "node process/index.js"
   },
   "name": "framework",
   "version": "1.0.0",
