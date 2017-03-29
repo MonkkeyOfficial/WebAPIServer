@@ -1,6 +1,7 @@
 import React = require('react')
 
 import { TabControl, Tab } from '../lib/directives/TabControl'
+import { Popover } from '../lib/directives/Popover'
 import { Icon } from '../lib/directives/Icon'
 
 declare var $ : any;
@@ -27,14 +28,29 @@ export class ExerciceExecution extends React.Component<ExerciceExecutionProps, a
       query.codes[name] = value;
     }
 
+    this.setState({
+      running: true
+    })
     $.ajax({
         url: this.props.url + '/invoke',
         method: 'POST',
+        dataType: 'jsonp',
         data: query,
         success: result => {
             this.setState({
-              test: result
+              test: result,
+              error: null,
+              running: false
             })
+        },
+        error: (jqXHR, textStatus, errorThrown) => {
+          console.log('error');
+          console.log(textStatus);
+          console.log(errorThrown);
+          this.setState({
+            error: textStatus,
+            running: false
+          })
         }
     })
   }
@@ -43,7 +59,8 @@ export class ExerciceExecution extends React.Component<ExerciceExecutionProps, a
   {
     super(a1, a2)
     this.state = {
-      text: null
+      test: null,
+      running: false
     }
   }
 
@@ -63,7 +80,17 @@ export class ExerciceExecution extends React.Component<ExerciceExecutionProps, a
     return <div className={this.props.className}>
       <label>Online test</label>
       <button className="btn btn-success btn-xs run-btn" onClick={() => this.run()}>
-        Run
+        Run {
+          this.state.running ?
+            <Icon name="icon-spinner" className="spin" />
+          : !this.state.test && !this.state.error ?
+            <span />
+          : !this.state.error && this.state.test.success && !this.state.test.error ?
+            <Icon name="icon-check" />
+          : <Popover content={this.state.error}>
+              <Icon name="icon-remove" />
+            </Popover>
+        }
       </button>
       <div className="test row">
         <div className="col-xs-12">

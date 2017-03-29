@@ -23864,12 +23864,15 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var TabControl_1 = require("../lib/directives/TabControl");
+var Popover_1 = require("../lib/directives/Popover");
+var Icon_1 = require("../lib/directives/Icon");
 var ExerciceExecution = (function (_super) {
     __extends(ExerciceExecution, _super);
     function ExerciceExecution(a1, a2) {
         var _this = _super.call(this, a1, a2) || this;
         _this.state = {
-            text: null
+            test: null,
+            running: false
         };
         return _this;
     }
@@ -23883,13 +23886,28 @@ var ExerciceExecution = (function (_super) {
             var value = $('#_test_' + name).val();
             query.codes[name] = value;
         }
+        this.setState({
+            running: true
+        });
         $.ajax({
             url: this.props.url + '/invoke',
             method: 'POST',
+            dataType: 'jsonp',
             data: query,
             success: function (result) {
                 _this.setState({
-                    test: result
+                    test: result,
+                    error: null,
+                    running: false
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('error');
+                console.log(textStatus);
+                console.log(errorThrown);
+                _this.setState({
+                    error: textStatus,
+                    running: false
                 });
             }
         });
@@ -23905,7 +23923,16 @@ var ExerciceExecution = (function (_super) {
         }
         return React.createElement("div", { className: this.props.className },
             React.createElement("label", null, "Online test"),
-            React.createElement("button", { className: "btn btn-success btn-xs run-btn", onClick: function () { return _this.run(); } }, "Run"),
+            React.createElement("button", { className: "btn btn-success btn-xs run-btn", onClick: function () { return _this.run(); } },
+                "Run ",
+                this.state.running ?
+                    React.createElement(Icon_1.Icon, { name: "icon-spinner", className: "spin" })
+                    : !this.state.test && !this.state.error ?
+                        React.createElement("span", null)
+                        : !this.state.error && this.state.test.success && !this.state.test.error ?
+                            React.createElement(Icon_1.Icon, { name: "icon-check" })
+                            : React.createElement(Popover_1.Popover, { content: this.state.error },
+                                React.createElement(Icon_1.Icon, { name: "icon-remove" }))),
             React.createElement("div", { className: "test row" },
                 React.createElement("div", { className: "col-xs-12" },
                     React.createElement(TabControl_1.TabControl, null, testFields))),
@@ -23925,7 +23952,7 @@ var ExerciceExecution = (function (_super) {
 }(React.Component));
 exports.ExerciceExecution = ExerciceExecution;
 
-},{"../lib/directives/TabControl":223,"react":212}],219:[function(require,module,exports){
+},{"../lib/directives/Icon":221,"../lib/directives/Popover":222,"../lib/directives/TabControl":223,"react":212}],219:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||

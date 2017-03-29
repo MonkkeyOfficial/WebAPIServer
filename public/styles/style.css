@@ -237,7 +237,12 @@ main {
     main .exercice .test-wrapper .run-btn {
       position: absolute;
       right: 0px;
-      top: 0px; }
+      top: 0px;
+      color: white;
+      fill: white; }
+    main .exercice .test-wrapper .popover {
+      color: black;
+      fill: black; }
   main .exercice .tab-content {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
