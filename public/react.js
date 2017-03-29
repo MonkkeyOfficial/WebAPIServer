@@ -23810,7 +23810,7 @@ var Exercice = (function (_super) {
             query.codes[name] = value;
         }
         $.ajax({
-            url: 'http://192.168.0.36:9000/exo/' + this.state.exercice.uid + '/invoke',
+            url: this.getUrl() + '/invoke',
             method: 'POST',
             data: query,
             success: function (result) {
@@ -23819,6 +23819,9 @@ var Exercice = (function (_super) {
                 });
             }
         });
+    };
+    Exercice.prototype.getUrl = function () {
+        return 'http://192.168.0.36:9000/exo/' + this.state.exercice.uid;
     };
     Exercice.prototype.render = function () {
         var _this = this;
@@ -23852,7 +23855,7 @@ var Exercice = (function (_super) {
                         this.state.copied !== undefined ?
                             React.createElement(Icon_1.Icon, { name: this.state.copied ? 'icon-check' : 'icon-remove' })
                             : React.createElement("span", null)),
-                    React.createElement("textarea", { rows: 1, className: "value", readOnly: true, value: 'http://localhost/exo/' + this.state.exercice.uid }))),
+                    React.createElement("textarea", { rows: 1, className: "value", readOnly: true, value: this.getUrl() }))),
             React.createElement("div", { className: "body" },
                 React.createElement("div", { className: "repositories-wrapper" },
                     React.createElement("label", null, "Repositories"),

@@ -1,6 +1,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
-    app = express();
+    app = express(),
+    path = require('path');
 
 process.on('uncaughtException', function (err) {
     console.error(err.stack);
@@ -16,7 +17,7 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.toRootPage = function(res) {
-    res.sendFile('views/index.html', { root: __dirname });
+    res.sendFile('./views/index.html', { root: path.join(__dirname, '..') });
 }
 
 compile.init(app);

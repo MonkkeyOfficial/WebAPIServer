@@ -184,7 +184,7 @@ export class Exercice extends React.Component<ExerciceProps, any>
     }
 
     $.ajax({
-        url: 'http://192.168.0.36:9000/exo/' + this.state.exercice.uid + '/invoke',
+        url: this.getUrl() + '/invoke',
         method: 'POST',
         data: query,
         success: result => {
@@ -193,6 +193,11 @@ export class Exercice extends React.Component<ExerciceProps, any>
             })
         }
     })
+  }
+
+  getUrl()
+  {
+    return 'http://192.168.0.36:9000/exo/' + this.state.exercice.uid;
   }
 
   render()
@@ -236,7 +241,7 @@ export class Exercice extends React.Component<ExerciceProps, any>
             : <span />
           }
           </button>
-          <textarea rows={1} className="value" readOnly value={'http://localhost/exo/' + this.state.exercice.uid}></textarea>
+          <textarea rows={1} className="value" readOnly value={this.getUrl()}></textarea>
         </div>
       </div>
       <div className="body">
