@@ -1,0 +1,14 @@
+{
+    "compilation": {
+        "timeout_sec": 120,
+        "image_base": "arch-node:base"
+    },
+    "execution": {
+        "timeout_max_sec": 5
+    },
+    "db": {
+        "connectionLimit": 100,
+        "user": "root",
+        "database": "tutopush_test"
+    }
+}

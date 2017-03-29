@@ -1,0 +1,21 @@
+
+$main-color: #fff;
+
+
+
+$header-bg-color: $main-color;
+$header-text-color: white;
+
+$footer-bg-color: #fafbfc;
+$footer-text-color: darken($footer-bg-color, 30%);
+$footer-padding: 40px;
+
+$body-bg-color: lighten($main-color, 20%);
+$body-text-color: $main-color;
+
+$content-bg-color: white;
+$content-text-color: $body-text-color;
+$content-margin-lat: 5%;
+$content-padding: 20px;
+$content-border: 1px solid darken($body-bg-color, 10%);
+$content-border-radius: 10px;

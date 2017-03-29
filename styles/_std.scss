@@ -1,0 +1,144 @@
+//***************************************//
+//             CONFIGURATION             //
+//***************************************//
+// Default (do not touch)
+$std-check-radio-transition-time: .5s;
+$std-check-radio-default-dark: rgba(0,0,0,0.54);
+$std-check-radio-default-white: white;
+$std-check-radio-default-orange: rgba(255,87,34,0.87);
+$std-check-radio-default-orange-lighten: 10%;
+$std-check-radio-default-disabled: rgba(0,0,0,0.38);
+$std-check-radio-default-size: 1.5em;
+
+// Values (make changes here)
+
+
+//***************************************//
+
+.spin svg
+{
+    animation-name: spin;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    
+    @keyframes spin
+    {
+        from { transform:rotate(0deg); }
+        to { transform:rotate(360deg); }
+    }
+}
+
+.icon svg
+{
+    width: 1em;
+    height: 1em;
+    
+    vertical-align: middle;
+}
+.icon.top svg
+{
+    vertical-align: top;
+}
+.icon.middle svg
+{
+    vertical-align: middle;
+}
+
+.checkbox-wrapper,
+.radio-wrapper
+{
+    cursor: pointer;
+    * {
+        cursor: inherit;
+    }
+
+    padding-left: $std-check-radio-default-size;
+
+    .checkbox-box, .radio-box
+    {
+        margin-left: -$std-check-radio-default-size;
+        display: inline-block;
+        width: $std-check-radio-default-size;
+        height: $std-check-radio-default-size;
+
+        -webkit-transition: background-color $std-check-radio-transition-time, border-color $std-check-radio-transition-time;
+        transition: background-color $std-check-radio-transition-time, border-color $std-check-radio-transition-time;
+
+        border-radius: 20%;
+
+        border: .15em solid $std-check-radio-default-dark;
+
+        background-color: $std-check-radio-default-white;
+
+        text-align: center;
+
+        &.unchecked
+        {
+            color: transparent;
+        }
+        &.checked
+        {
+            color: $std-check-radio-default-white;
+            background-color: $std-check-radio-default-orange;
+            border-color: $std-check-radio-default-orange;
+        }
+        &.indeterminated
+        {
+            font-weight: bold;
+            color: $std-check-radio-default-dark;
+        }
+    }
+
+    .radio-box
+    {
+        border-radius: 100%;
+    }
+
+    &:hover
+    {
+        .checkbox-box, .radio-box
+        {
+            &.indeterminated
+            {
+                color: $std-check-radio-default-orange;
+            }
+            &.unchecked,
+            &.indeterminated
+            {
+                border-color: $std-check-radio-default-orange;
+            }
+            &.checked
+            {
+                background-color: lighten($std-check-radio-default-orange, $std-check-radio-default-orange-lighten);
+                border-color: lighten($std-check-radio-default-orange, $std-check-radio-default-orange-lighten);
+            }
+        }
+    }
+
+    &[disabled]
+    {
+        cursor: not-allowed;
+
+        .checkbox-box, .radio-box
+        {
+            &.unchecked
+            {
+                color: transparent;
+                border-color: $std-check-radio-default-disabled !important;
+            }
+            &.checked
+            {
+                color: $std-check-radio-default-white;
+                background-color: $std-check-radio-default-disabled !important;
+                border-color: transparent !important;
+            }
+            &.indeterminated
+            {
+                font-weight: bold;
+                color: $std-check-radio-default-dark;
+                border-color: $std-check-radio-default-disabled !important;
+            }
+        }
+    }
+}

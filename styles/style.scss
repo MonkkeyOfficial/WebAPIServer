@@ -1,0 +1,65 @@
+
+@import 'bootstrap_variables';
+
+@mixin transition($affect, $time)
+{
+    -webkit-transition: $affect $time;
+            transition: $affect $time;
+}
+
+@mixin _-screen-min($screen-min)
+{
+    @media (min-width: $screen-min)
+    {
+        @content;
+    }
+}
+@mixin _-screen-max($screen-max)
+{
+    @media (max-width: $screen-max)
+    {
+        @content;
+    }
+}
+@mixin xs-screen-min
+{ @content; }
+@mixin sm-screen-min
+{ @include _-screen-min($screen-xs-max) { @content; } }
+@mixin md-screen-min
+{ @include _-screen-min($screen-sm-max) { @content; } }
+@mixin lg-screen-min
+{ @include _-screen-min($screen-md-max) { @content; } }
+
+@mixin xs-screen-max
+{ @include _-screen-max($screen-xs-max) { @content; } }
+@mixin sm-screen-max
+{ @include _-screen-max($screen-sm-max) { @content; } }
+@mixin md-screen-max
+{ @include _-screen-max($screen-md-max) { @content; } }
+@mixin lg-screen-max
+{ @include _-screen-max($screen-lg-max) { @content; } }
+
+@mixin mobile-only
+{
+    @include xs-screen-max
+    {
+        @content;
+    }
+}
+@mixin mobile-excluded
+{
+    @include sm-screen-min
+    {
+        @content;
+    }
+}
+
+@mixin color($color)
+{
+    color: $color;
+    fill: $color;
+}
+
+@import 'variables';
+@import 'std';
+@import 'tosort';

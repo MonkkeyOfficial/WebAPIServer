@@ -1,0 +1,251 @@
+
+@mixin bg-dashed {
+    background-image: url(http://adriencastex.fr/public/icons/bg.cc.svg);
+    background-size: 50px 50px;
+}
+
+@mixin onlined {
+    @include xs-screen-min {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+}
+
+input, button, textarea {
+    outline:0 !important;
+}
+
+body {
+    background-color: $footer-bg-color;
+    @include bg-dashed();
+    
+    font-family: 'Open Sans', sans-serif;
+}
+
+body > nav, footer {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+body > nav {
+    @include color(black);
+
+    background-color: $header-bg-color;
+    padding: 10px;
+
+    @include onlined();
+    
+
+    .logo svg {
+        $size: 4rem;
+        width: $size;
+        height: $size;
+    }
+
+    .brand-name {
+        font-size: 2.5rem;
+    }
+
+    .brand {
+        display: inline-block;
+        padding-right: 30px;
+    }
+    .brand:hover {
+        cursor: pointer;
+        background-color: darken(white, 5%);
+        border-radius: 30px;
+    }
+
+    .search {
+        float: right;
+        margin-top: 1rem;
+
+        > * {
+            padding-top: 3px;
+            padding-bottom: 3px;
+            border: 1px solid #e1e4e8;
+            border-radius: 5px;
+            
+            font-size: 1.2rem;
+            background-color: white;
+
+            &:not(:first-child) {
+                border-bottom-left-radius: 0px;
+                border-top-left-radius: 0px;
+                border-left: 0px;
+            }
+            &:not(:last-child) {
+                border-bottom-right-radius: 0px;
+                border-top-right-radius: 0px;
+                border-right: 0px;
+            }
+        }
+
+        .btn {
+            border-left: 1px dashed #e1e4e8;
+            vertical-align: bottom;
+
+            &:hover {
+                background-color: darken(white, 5%);
+            }
+        }
+
+        input {
+            padding-right: 10px;
+            padding-left: 10px;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+    }
+}
+
+main {
+    background-color: white;
+
+    .exercice {
+
+        .header {
+            .undefined {
+                @include color(#555);
+            }
+
+            .dates {
+                float: right;
+            }
+
+            @include bg-dashed();
+
+            background-color: darken(#fafbfc, 1%);
+            border-top: 1px solid #e1e4e8;
+            border-bottom: 1px dashed #e1e4e8;
+
+            padding: 10px;
+            margin-bottom: 10px;
+
+            @include onlined();
+
+            .url {
+                text-align: center;
+
+                > * {
+                    padding-top: 3px;
+                    padding-bottom: 3px;
+                    border: 1px solid #e1e4e8;
+                    border-radius: 5px;
+                    
+                    font-size: 1.2rem;
+                    background-color: white;
+
+                    &:not(:first-child) {
+                        border-bottom-left-radius: 0px;
+                        border-top-left-radius: 0px;
+                        border-left: 0px;
+                    }
+                    &:not(:last-child) {
+                        border-bottom-right-radius: 0px;
+                        border-top-right-radius: 0px;
+                        border-right: 0px;
+                    }
+                }
+
+                .btn {
+                    border-right: 1px dashed #e1e4e8;
+
+                    &:hover {
+                        background-color: darken(white, 5%);
+                    }
+                    vertical-align: bottom;
+                }
+
+                .value {
+                    padding-right: 10px;
+                    padding-left: 10px;
+                    cursor: pointer;
+                    resize: none;
+
+                    display: inline-block;
+                    vertical-align: bottom;
+                }
+            }
+        }
+
+        .body {
+            @include onlined();
+        }
+
+        samp {
+            border: 1px solid #ccc;
+            background-color: #F5F5F5;
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        .user-script {
+            > .row {
+                .path {
+                    color: #666;
+                    font-weight: normal;
+                    font-style: italic;
+                }
+            }
+
+            ul {
+                border-top: 1px dotted darken(#F5F5F5, 10%);
+                padding-top: 10px;
+                margin-top: 5px;
+            }
+
+            border: 1px solid #ccc;
+            background-color: #F5F5F5;
+            border-radius: 4px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            &:not(:first-child) {
+                border-top: 0px;
+                border-top-right-radius: 0px;
+                border-top-left-radius: 0px;
+            }
+            &:not(:last-child) {
+                border-bottom-style: dashed;
+                border-bottom-left-radius: 0px;
+                border-bottom-right-radius: 0px;
+            }
+        }
+
+        .test-wrapper {
+            position: relative;
+
+            .run-btn {
+                position: absolute;
+                right: 0px;
+                top: 0px;
+            }
+        }
+
+        .tab-content {
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-top: 0px;
+
+            display: inline-block;
+            width: 100%;
+        }
+    }
+    
+    padding-bottom: 30px;
+}
+
+footer {
+    text-align: center;
+    @include color($footer-text-color);
+
+    .icon {
+        font-size: 4em;
+    }
+
+    border-top: 1px dashed #e1e4e8;
+    padding-top: $footer-padding;
+    padding-bottom: $footer-padding;
+}

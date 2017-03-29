@@ -1,0 +1,61 @@
+{
+  "devWatcher": {
+    "cmd": "dev",
+    "runs": [
+      {
+        "type": "typescript",
+        "tempFolder": "react/bin",
+        "rootFile": "root",
+        "dest": "public/react.js"
+      },
+      {
+        "type": "sass",
+        "srcFolder": "styles",
+        "destFolder": "public/styles"
+      }
+    ]
+  },
+  "compilerOptions": {
+    "jsx": "react",
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "outDir": "react/bin",
+    "sourceMap": true,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "target": "ES5"
+  },
+  "files": [
+    "react/src/root.tsx"
+  ],
+  "scripts": {
+    "dev": "node watch.js package.json dev",
+    "build": "node watch.js package.json prod"
+  },
+  "name": "framework",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "multer": "^1.3.0",
+    "mysql": "^2.13.0"
+  },
+  "devDependencies": {
+    "@types/react": "^15.0.18",
+    "@types/react-dom": "^0.14.23",
+    "@types/react-router": "^4.0.0",
+    "@types/react-router-dom": "^4.0.0",
+    "node-watch": "^0.5.2",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-router": "^4.0.0",
+    "react-router-dom": "^4.0.0"
+  }
+}
