@@ -2,7 +2,7 @@ import React = require('react')
 
 interface TabProps
 {
-  name: String;
+  name: string;
 }
 export class Tab extends React.Component<TabProps, any>
 {
@@ -34,14 +34,35 @@ export class TabControl extends React.Component<any, any>
   {
     super(a1, a2);
     this.state = {
-      activated: this.props.children.length > 0 ? this.props.children[0].key : null
+      activated: this.props.children.length > 0 ? this.getKey(this.props.children[0]) : null
     }
   }
 
-  activate(child)
+  getKey(child: Tab) : string
   {
+    return child.props.name;
+  }
+
+  activate(child: number|Tab)
+  {
+    if(child === undefined || child === null)
+    {
+      this.setState({
+        activated: null
+      })
+      return;
+    }
+
+    if(child.constructor === Number)
+    {
+      this.setState({
+        activated: this.getKey(this.props.children[child as number])
+      });
+      return;
+    }
+
     this.setState({
-      activated: child.key
+      activated: this.getKey(child as Tab)
     })
   }
 
@@ -59,9 +80,9 @@ export class TabControl extends React.Component<any, any>
         continue;
       }
       
-      if(this.state.activated === child.key)
+      if(this.state.activated === this.getKey(child))
         activated = child;
-      
+        
       tabs.push(<li key={k} role="presentation" onClick={() => this.activate(child)} className={activated === child ? 'active' : ''}><a role="tab">{child.props.name}</a></li>);
     }
 

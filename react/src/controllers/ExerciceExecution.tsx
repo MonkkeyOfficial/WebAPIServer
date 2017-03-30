@@ -34,7 +34,6 @@ export class ExerciceExecution extends React.Component<ExerciceExecutionProps, a
     $.ajax({
         url: this.props.url + '/invoke',
         method: 'POST',
-        dataType: 'jsonp',
         data: query,
         success: result => {
             this.setState({

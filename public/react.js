@@ -23892,7 +23892,6 @@ var ExerciceExecution = (function (_super) {
         $.ajax({
             url: this.props.url + '/invoke',
             method: 'POST',
-            dataType: 'jsonp',
             data: query,
             success: function (result) {
                 _this.setState({
@@ -24157,13 +24156,28 @@ var TabControl = (function (_super) {
     function TabControl(a1, a2) {
         var _this = _super.call(this, a1, a2) || this;
         _this.state = {
-            activated: _this.props.children.length > 0 ? _this.props.children[0].key : null
+            activated: _this.props.children.length > 0 ? _this.getKey(_this.props.children[0]) : null
         };
         return _this;
     }
+    TabControl.prototype.getKey = function (child) {
+        return child.props.name;
+    };
     TabControl.prototype.activate = function (child) {
+        if (child === undefined || child === null) {
+            this.setState({
+                activated: null
+            });
+            return;
+        }
+        if (child.constructor === Number) {
+            this.setState({
+                activated: this.getKey(this.props.children[child])
+            });
+            return;
+        }
         this.setState({
-            activated: child.key
+            activated: this.getKey(child)
         });
     };
     TabControl.prototype.render = function () {
@@ -24176,7 +24190,7 @@ var TabControl = (function (_super) {
                 console.error('The direct children of a TabControl must be Tab elements.');
                 return "continue";
             }
-            if (this_1.state.activated === child.key)
+            if (this_1.state.activated === this_1.getKey(child))
                 activated = child;
             tabs.push(React.createElement("li", { key: k, role: "presentation", onClick: function () { return _this.activate(child); }, className: activated === child ? 'active' : '' },
                 React.createElement("a", { role: "tab" }, child.props.name)));
