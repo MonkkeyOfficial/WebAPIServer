@@ -23620,7 +23620,6 @@ var Icon_1 = require("./lib/directives/Icon");
 var Popover_1 = require("./lib/directives/Popover");
 var Config = (function () {
     function Config() {
-        this.websiteName = 'Hard Coder';
     }
     Object.defineProperty(Config, "get", {
         get: function () {
