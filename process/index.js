@@ -1,6 +1,8 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     app = express(),
+    session = require('express-session'),
+    config = require('./config.js'),
     path = require('path');
 
 process.on('uncaughtException', function (err) {
@@ -13,6 +15,7 @@ var manage = require('./web/web.manage.js');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(session(config.session))
 
 app.use(express.static('public'));
 

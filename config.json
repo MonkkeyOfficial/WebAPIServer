@@ -10,5 +10,8 @@
         "connectionLimit": 100,
         "user": "root",
         "database": "tutopush_test"
+    },
+    "session": {
+        "secret": "user-secret"
     }
 }
