@@ -11,7 +11,7 @@ declare var $ : any;
 
 interface ExerciceProps
 {
-  id: Number;
+  id: number;
 }
 
 function def(root, name, defaultValue)
