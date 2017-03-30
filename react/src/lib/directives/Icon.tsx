@@ -11,7 +11,7 @@ interface IconProps {
 
 export class Icon extends React.Component<IconProps, any>
 {
-  currentName: String = null;
+  currentName: string = null;
 
   componentDidMount()
   {

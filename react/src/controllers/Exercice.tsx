@@ -22,7 +22,7 @@ function def(root, name, defaultValue)
 
 interface UserScriptProps
 {
-  name: String;
+  name: string;
   config: any;
 }
 
