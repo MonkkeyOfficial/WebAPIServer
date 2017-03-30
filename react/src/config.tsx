@@ -35,6 +35,4 @@ export class Config
       ]
     };
   }
-
-  websiteName:string = 'Hard Coder';
 }
