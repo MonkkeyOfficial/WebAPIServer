@@ -11,7 +11,7 @@ module.exports = {
                 return;
             }
 
-            image.update(req.params.id, req.file.path, data => {
+            image.update(req.params.id, req.session.user, req.file.path, data => {
                 res.json(data);
             });
         });

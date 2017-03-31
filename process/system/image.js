@@ -4,9 +4,16 @@ var compiler = require('./compile.js'),
     db = require('../db.js');
 
 module.exports = {
-    update: function(unitId, filePath, callback)
+    update: function(unitId, user, filePath, callback)
     {
-        db.query('SELECT i.* FROM dockerimage i INNER JOIN exercice e ON e.image_id = i.id WHERE e.uid = ?', [ unitId ], (e, r) => {
+        if(!user)
+        {
+            callback({ success: false, error: { code: 9, message: "Not connected." } });
+            logger.error("Not connected.", unitId);
+            return;
+        }
+
+        db.query('SELECT i.* FROM dockerimage i INNER JOIN exercice e ON e.image_id = i.id INNER JOIN user_exercice u ON u.user_id = ? AND u.exercice_id = e.uid WHERE e.uid = ?', [ user.id, unitId ], (e, r) => {
             if(e)
             {
                 callback({ success: false, error: { code: 1, message: "Unkown error while requesting the database." } });
@@ -16,8 +23,8 @@ module.exports = {
 
             if(!r || !r.length || r.length < 1)
             {
-                callback({ success: false, error: { code: 10, message: "Can't find the unit id '" + unitId + "'." } });
-                logger.error("Can't find the unit id '" + unitId + "'.", unitId);
+                callback({ success: false, error: { code: 10, message: "Can't find the unit id '" + unitId + "' or you are not connected." } });
+                logger.error("Can't find the unit id '" + unitId + "' or you are not connected.", unitId);
                 return;
             }
 
