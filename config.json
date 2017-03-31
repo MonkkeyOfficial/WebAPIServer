@@ -12,6 +12,19 @@
         "database": "tutopush_test"
     },
     "session": {
-        "secret": "user-secret"
+        "secret": "...",
+        "resave": false,
+        "saveUninitialized": false,
+        "cookie": {
+            "maxAge": 36000000
+        }
+    },
+    "user": {
+        "password": {
+            "salt": "...",
+            "iterations": 1000,
+            "keylen": 128,
+            "digest": "sha256"
+        }
     }
 }
