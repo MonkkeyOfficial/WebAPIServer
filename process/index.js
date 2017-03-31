@@ -12,6 +12,7 @@ process.on('uncaughtException', function (err) {
 var compile = require('./web/web.compile.js');
 var execute = require('./web/web.execute.js');
 var manage = require('./web/web.manage.js');
+var user = require('./web/web.user.js');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -26,6 +27,7 @@ app.toRootPage = function(res) {
 compile.init(app);
 execute.init(app);
 manage.init(app);
+user.init(app);
 
 app.listen(9000);
 console.log(' [o] Ready on port 9000.');
