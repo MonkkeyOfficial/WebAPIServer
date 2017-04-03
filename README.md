@@ -13,3 +13,4 @@ Web API Server hosting, compiling and executing of Monkkey projects.
 * Better separate the core and the API
 * Separated development (not compiled) files and compiled files (~ resulting standalone folder)
 * Complete the README.md file
+* Add 'Framework image' compilation (OS image -> Framwork image -> Exercice image)
