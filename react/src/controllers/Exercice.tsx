@@ -4,6 +4,7 @@ import { Api } from '../lib/services/Api'
 import { TabControl, Tab } from '../lib/directives/TabControl'
 import { Icon } from '../lib/directives/Icon'
 import { Config } from '../config'
+import * as model from '../Model'
 
 import { ExerciceExecution } from './ExerciceExecution'
 
@@ -60,7 +61,15 @@ export class UserScript extends React.Component<UserScriptProps, any>
   }
 }
 
-export class Exercice extends React.Component<ExerciceProps, any>
+interface ExerciceState
+{
+  found? : boolean
+  exercice? : model.Exercice
+  copied? : boolean
+  test? : any
+}
+
+export class Exercice extends React.Component<ExerciceProps, ExerciceState>
 {
   componentDidMount()
   {
@@ -72,15 +81,10 @@ export class Exercice extends React.Component<ExerciceProps, any>
         })
         return;
       }
-      
-      data.exercice.creation_date = new Date(data.exercice.creation_date);
-      data.exercice.edit_date = new Date(data.exercice.edit_date);
-      data.image.last_edit = new Date(data.image.last_edit);
-      
+
       this.setState({
         found: true,
-        exercice: data.exercice,
-        image: data.image
+        exercice: new model.Exercice(data.exercice)
       });
     });
   }
@@ -110,9 +114,9 @@ export class Exercice extends React.Component<ExerciceProps, any>
       codes: {}
     };
 
-    for(var name in this.state.image.config.userFiles)
+    for(var name in this.state.exercice.configuration.userFiles)
     {
-      var info = this.state.image.config.userFiles[name];
+      var info = this.state.exercice.configuration.userFiles[name];
       var value = $('#_test_' + name).val();
       query.codes[name] = value;
     }
@@ -131,7 +135,7 @@ export class Exercice extends React.Component<ExerciceProps, any>
 
   getUrl()
   {
-    return 'http://192.168.0.36:9000/exo/' + this.state.exercice.uid;
+    return 'http://192.168.0.36:9000/exo/' + this.state.exercice.id;
   }
 
   render()
@@ -140,22 +144,24 @@ export class Exercice extends React.Component<ExerciceProps, any>
       return <div>Loading...</div>;
     if(!this.state.found)
       return <div>Not found.</div>;
+    
+    console.log(this.state.exercice)
 
     var userScripts = [];
-    for(var name in this.state.image.config.userFiles)
-      userScripts.push(<UserScript key={name} name={name} config={this.state.image.config.userFiles[name]} />)
+    for(var name in this.state.exercice.configuration.userFiles)
+      userScripts.push(<UserScript key={name} name={name} config={this.state.exercice.configuration.userFiles[name]} />)
 
     var json = { codes: {}, stdin: '... [optional]', args: 'arg1 arg2 arg3 ... [optional]' };
-    for(var name in this.state.image.config.userFiles)
+    for(var name in this.state.exercice.configuration.userFiles)
       json.codes[name] = '...';
 
     return <div className="exercice">
       <div className="header">
         <div className="dates">
           <div className="creation-date">{this.state.exercice.creation_date.toDateString()}</div>
-          <div className="edit-date">{this.state.exercice.edit_date.toDateString()}</div>
+          <div className="edit-date">{this.state.exercice.last_edit.toDateString()}</div>
         </div>
-        <div>{this.state.exercice.name ? this.state.exercice.name : <span className="undefined undefined-name">No name</span>}</div>
+        <div>{this.state.exercice.title ? this.state.exercice.title : <span className="undefined undefined-name">No name</span>}</div>
         <div>{this.state.exercice.description ? this.state.exercice.description : <span className="undefined undefined-desc">No description</span>}</div>
         <div className="url">
           <button className="btn btn-default" onClick={() => { this.copyUrl() }}>Copy {
@@ -181,9 +187,9 @@ export class Exercice extends React.Component<ExerciceProps, any>
           </div>
         </div>
         <div className="image">
-          <div className="name row"><label className="col-sm-2">Image key</label> <span className="value">{this.state.image.image_name}</span></div>
-          <div className="timeout row"><label className="col-sm-2">Timeout</label> <span className="value">{this.state.image.timeout} second{this.state.image.timeout > 1 ? 's' : ''}</span></div>
-          <div className="command row"><label className="col-sm-2">Command</label> <samp className="value">{this.state.image.config.command}</samp></div>
+          <div className="name row"><label className="col-sm-2">Image key</label> <span className="value">{this.state.exercice.docker_key}</span></div>
+          <div className="timeout row"><label className="col-sm-2">Timeout</label> <span className="value">{this.state.exercice.configuration.timeout} second{this.state.exercice.configuration.timeout && this.state.exercice.configuration.timeout > 1 ? 's' : ''}</span></div>
+          <div className="command row"><label className="col-sm-2">Command</label> <samp className="value">{this.state.exercice.configuration.command}</samp></div>
           <div className="user-scripts-wrapper">
             <label>User scripts</label>
             <div className="user-scripts">
@@ -193,17 +199,17 @@ export class Exercice extends React.Component<ExerciceProps, any>
           <div className="config-wrapper">
             <label>Configuration</label>
             {
-              !this.state.image.config ?
+              !this.state.exercice.configuration ?
                 <div className="undefined undefined-config">No configuration available.</div>
-              : <pre className="config">{JSON.stringify(this.state.image.config, null, 2)}</pre>
+              : <pre className="config">{JSON.stringify(this.state.exercice.configuration, null, 2)}</pre>
             }
           </div>
           <div className="install-log-wrapper">
             <label>Install log</label>
             {
-              !this.state.image.install_log || this.state.image.install_log.trim().length === 0 ?
+              !this.state.exercice.install_log || this.state.exercice.install_log.trim().length === 0 ?
                 <div className="undefined undefined-install-log">No installation log available.</div>
-              : <samp className="install-log">{this.state.image.install_log}</samp>
+              : <samp className="install-log">{this.state.exercice.install_log}</samp>
             }
           </div>
           <div className="api-wrapper">
@@ -212,7 +218,7 @@ export class Exercice extends React.Component<ExerciceProps, any>
           </div>
           {
             this.state.found ?
-              <ExerciceExecution className="test-wrapper" image={this.state.image} url={this.getUrl()} />
+              <ExerciceExecution className="test-wrapper" exercice={this.state.exercice} url={this.getUrl()} />
             : <span />
           }
         </div>

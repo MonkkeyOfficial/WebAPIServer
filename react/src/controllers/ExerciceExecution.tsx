@@ -3,6 +3,7 @@ import React = require('react')
 import { TabControl, Tab } from '../lib/directives/TabControl'
 import { Popover } from '../lib/directives/Popover'
 import { Icon } from '../lib/directives/Icon'
+import * as model from '../Model'
 
 declare var $ : any;
 
@@ -10,7 +11,7 @@ interface ExerciceExecutionProps
 {
   url: string;
   className?: string;
-  image: any;
+  exercice: model.Exercice;
 }
 
 export class ExerciceExecution extends React.Component<ExerciceExecutionProps, any>
@@ -21,9 +22,9 @@ export class ExerciceExecution extends React.Component<ExerciceExecutionProps, a
       codes: {}
     };
 
-    for(var name in this.props.image.config.userFiles)
+    for(var name in this.props.exercice.configuration.userFiles)
     {
-      var info = this.props.image.config.userFiles[name];
+      var info = this.props.exercice.configuration.userFiles[name];
       var value = $('#_test_' + name).val();
       query.codes[name] = value;
     }
@@ -66,9 +67,9 @@ export class ExerciceExecution extends React.Component<ExerciceExecutionProps, a
   render()
   {
     var testFields = [];
-    for(var name in this.props.image.config.userFiles)
+    for(var name in this.props.exercice.configuration.userFiles)
     {
-      var info = this.props.image.config.userFiles[name];
+      var info = this.props.exercice.configuration.userFiles[name];
       testFields.push(<Tab key={name} name={name}>
         <div className="col-xs-12">
           <textarea className="form-control" defaultValue={info.default ? info.default : ''} id={'_test_' + name} key={name} />
