@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "outDir": "../bin/process",
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
+    "target": "ES5"
+  }
+}

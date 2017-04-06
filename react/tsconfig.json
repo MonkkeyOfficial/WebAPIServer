@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "outDir": "../bin/react",
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
+    "target": "ES5"
+  }
+}
