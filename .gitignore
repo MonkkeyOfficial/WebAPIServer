@@ -1,3 +1,4 @@
 react/bin
 node_modules
 *.tmp-browserify-*
+bin/react
