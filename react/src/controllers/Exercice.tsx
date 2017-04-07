@@ -73,7 +73,7 @@ export class Exercice extends React.Component<ExerciceProps, ExerciceState>
 {
   componentDidMount()
   {
-    Api.all('/exo/' + this.props.id, data => {
+    Api.all('/exo/' + this.props.id, (data : model.APIResponse.APIExoInformation) => {
       if(data.success !== undefined && !data.success)
       {
         this.setState({
@@ -84,7 +84,7 @@ export class Exercice extends React.Component<ExerciceProps, ExerciceState>
 
       this.setState({
         found: true,
-        exercice: new model.Exercice(data.exercice)
+        exercice: new model.Exercice(data.data)
       });
     });
   }
@@ -144,8 +144,6 @@ export class Exercice extends React.Component<ExerciceProps, ExerciceState>
       return <div>Loading...</div>;
     if(!this.state.found)
       return <div>Not found.</div>;
-    
-    console.log(this.state.exercice)
 
     var userScripts = [];
     for(var name in this.state.exercice.configuration.userFiles)

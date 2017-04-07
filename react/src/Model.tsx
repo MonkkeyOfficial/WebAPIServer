@@ -1,5 +1,7 @@
 import { IExercice } from '../../process/entities/shared/IExercice'
 
+export { APIResponse } from '../../process/entities/shared/APIResponse'
+
 export { IExercice } from '../../process/entities/shared/IExercice'
 export class Exercice extends IExercice
 {
