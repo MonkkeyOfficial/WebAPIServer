@@ -26,9 +26,9 @@ export interface ImageCompilationCallback
 export interface ImageCompilationOptions
 {
     zipFilePath : string
-    deleteFileOnExit : boolean
-    deleteFileOnError : boolean
-    deleteFileOnSuccess : boolean
+    deleteFileOnExit? : boolean
+    deleteFileOnError? : boolean
+    deleteFileOnSuccess? : boolean
 }
 
 export interface ImageExecuteCallback
@@ -40,13 +40,19 @@ export interface ImageExecuteOptions
 {
     dockerKey : string
     timeout : number | string
-    stdin? : string
+    stdin? : any
 }
 
 export class ImageUtil
 {
     static execute(options : ImageExecuteOptions, callback : ImageExecuteCallback)
     {
+        if(!options.dockerKey || !options.dockerKey.trim || options.dockerKey.trim().length === 0)
+        {
+            callback(new Error(null, 'compilation.missing', 'No compilation found.'))
+            return;
+        }
+
         var child = exec('docker run --rm -i ' + options.dockerKey + ' timeout ' + options.timeout + 's /bin/node /root/index.js', (e,stdout,se) => {
             if(e || se && se.trim().length > 0)
             {

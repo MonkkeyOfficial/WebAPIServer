@@ -17,6 +17,10 @@ var ImageUtil = (function () {
     function ImageUtil() {
     }
     ImageUtil.execute = function (options, callback) {
+        if (!options.dockerKey || !options.dockerKey.trim || options.dockerKey.trim().length === 0) {
+            callback(new Error_1.default(null, 'compilation.missing', 'No compilation found.'));
+            return;
+        }
         var child = child_process_1.exec('docker run --rm -i ' + options.dockerKey + ' timeout ' + options.timeout + 's /bin/node /root/index.js', function (e, stdout, se) {
             if (e || se && se.trim().length > 0) {
                 callback(new Error_1.default(e, 'undefined', undefined, se));

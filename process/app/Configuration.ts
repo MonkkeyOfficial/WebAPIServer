@@ -11,6 +11,10 @@ export interface Configuration
         image_base : string
         timeout_sec : number
     }
+
+    execution : {
+        timeout_max_sec : number
+    }
 }
 
 export default configNS.default as Configuration;

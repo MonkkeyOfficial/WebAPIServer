@@ -2,7 +2,7 @@ import { Image, ImageUtil, ImageCompilable, ImageCompilableResult, ImageCompilat
 import { IExercice } from './shared/IExercice'
 import Error from '../app/Error'
 
-export interface ExerciceImageExecuteCallback
+export interface ExerciceExecuteCallback
 {
     (error : Error, result? : any) : void
 }
@@ -31,7 +31,7 @@ export class Exercice extends IExercice implements ImageCompilable
         })
     }
     
-    execute(options : ExerciceExecuteOptions, callback : ExerciceImageExecuteCallback)
+    execute(options : ExerciceExecuteOptions, callback : ExerciceExecuteCallback)
     {
         ImageUtil.execute({
             dockerKey: this.docker_key,
@@ -64,5 +64,5 @@ export class Exercice extends IExercice implements ImageCompilable
 export interface ExerciceExecuteOptions
 {
     timeout? : number | string
-    stdin? : string
+    stdin? : any
 }
