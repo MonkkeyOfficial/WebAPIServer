@@ -28,12 +28,13 @@ export class App extends Application
         app.use(bodyParser.json());
         app.use(session(config.session))
 
-        app.use(express.static('public'));
+        app.use(express.static('public/bin'));
+        app.use(express.static('public/src/assets'));
     }
 
     toRootPage(response : Response)
     {
-        response.sendFile('./views/index.html', { root: path.join(__dirname, '../../..') });
+        response.sendFile('./public/src/views/index.html', { root: path.join(__dirname, '../../..') });
     }
 }
 

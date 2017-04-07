@@ -6,9 +6,9 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "outDir": "../bin/react",
+    "outDir": "bin",
     "typeRoots": [
-      "../node_modules/@types"
+      "../../node_modules/@types"
     ],
     "target": "ES5"
   }

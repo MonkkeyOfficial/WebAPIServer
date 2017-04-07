@@ -5,9 +5,9 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "outDir": "../bin/process",
+    "outDir": "bin",
     "typeRoots": [
-      "../node_modules/@types"
+      "../../node_modules/@types"
     ],
     "target": "ES5"
   }

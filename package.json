@@ -4,20 +4,20 @@
     "runs": [
       {
         "type": "typescript",
-        "tempFolder": "bin/react/react/src",
+        "tempFolder": "client/bin/client/src",
         "rootFile": "root",
-        "dest": "public/react.js",
-        "configFile": "react/tsconfig.json"
+        "dest": "public/bin/react.js",
+        "configFile": "client/tsconfig.json"
       },
       {
         "type": "typescript",
         "browserify": false,
-        "configFile": "process/tsconfig.json"
+        "configFile": "server/tsconfig.json"
       },
       {
         "type": "sass",
-        "srcFolder": "styles",
-        "destFolder": "public/styles"
+        "srcFolder": "public/src/styles",
+        "destFolder": "public/bin/styles"
       }
     ]
   },
@@ -35,7 +35,7 @@
   "scripts": {
     "dev": "dev-watch package.json dev",
     "build": "dev-watch package.json prod",
-    "serve": "node process/index.js"
+    "start": "node server/bin/index.js"
   },
   "name": "framework",
   "version": "1.0.0",

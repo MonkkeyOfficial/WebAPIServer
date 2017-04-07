@@ -1,8 +1,8 @@
-import { IExercice } from '../../process/entities/shared/IExercice'
+import { IExercice } from '../../server/src/entities/shared/IExercice'
 
-export { APIResponse } from '../../process/entities/shared/APIResponse'
+export { APIResponse } from '../../server/src/entities/shared/APIResponse'
 
-export { IExercice } from '../../process/entities/shared/IExercice'
+export { IExercice } from '../../server/src/entities/shared/IExercice'
 export class Exercice extends IExercice
 {
   constructor(data : any)
